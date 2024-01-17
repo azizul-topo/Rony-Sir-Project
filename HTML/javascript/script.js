@@ -28,7 +28,7 @@ addUserBtn.onclick = () => {
          'name': name
       });
    }
-
+console.log(userArray)
    SaveInfo(userArray);
    usernameTextField.value = '';
    addUserBtn.innerText = btnText;
