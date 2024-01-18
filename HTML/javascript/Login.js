@@ -17,7 +17,7 @@ function login(event) {// Retrieve usersData from localStorage on page load (if 
     if (user) {
         // User found, do something (e.g., redirect to another page)
         alert("Login successful!");
-        window.location.href = "";
+        window.location.href = "index.html";
     } else {
         // User not found or password incorrect
         alert("Invalid email or password");
