@@ -1,87 +1,135 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do list project</title>
-    <!-- bootstrap 5.0.2 css for design -->
-<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <!-- Tailwind CSS -->
+    
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
+      rel="stylesheet"
+      type="text/css"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+  </head>
 
-<!-- font awesome css for icons -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
-
-</head>
-<body>
-    <div class="container-fluid">
-        <div class="container">
-          <div class="mx-auto mt-5" style="max-width: 700px;">
-            <div class="input-group mb-3">
-              <input type="text" class="form-control" placeholder="Enter Your Name" aria-label="Recipient's username" id="username" aria-describedby="button-addon2">
-              <button class="btn text-white btn-info" type="button" id="addUser">Add User</button>
+  <body
+    class="bg-cover bg-black pb-72 bg-[url('https://img.freepik.com/premium-vector/shopping-doodle-outline-seamless-pattern-background-vector-illustration_7087-2895.jpg')]"
+  >
+    <div class="container mx-auto max-w-screen-md">
+      <h1 class="text-violet-800 font-extrabold text-5xl text-center py-5">
+        To do list Project
+      </h1>
+      <hr class="border-2 my-5 border-blue-400 mx-10" />
+      <div class="mx-auto">
+        <!-- --------------------Task Entry---------------------------- -->
+        <div
+          class="bg-violet-50 shadow-lg shadow-blue-700 px-10 justify-between rounded-md py-5 flex gap-10 items-center"
+        >
+          <div class="flex gap-3">
+            <input
+              type="text"
+              class="py-1 rounded-md border-2 px-5 border-blue-500 outline-none"
+              placeholder="Enter Your Name"
+              id="username"
+            />
+            <input
+              type="text"
+              class="py-1 rounded-md border-2 px-5 border-blue-500 outline-none"
+              placeholder="Enter Details"
+              id="details"
+            />
+          </div>
+          <button
+            class="btn shadow-lg shadow-red-300 bg-blue-600 hover:bg-blue-100 text-white hover:text-blue-700 duration-300"
+            type="button"
+            id="addUser"
+          >
+            Add Task
+          </button>
+        </div>
+        <div class="my-3 flex justify-between items-center">
+          <div class="text-xl font-bold">
+            Records per page
+            <select class="form-select" id="recordSize">
+              <option value="5">5</option>
+              <option selected value="10">10</option>
+              <option value="20">20</option>
+              <option value="30">30</option>
+            </select>
+          </div>
+          <div class="text-xl gap-2 font-bold flex">
+            Search:
+            <div class="flex items-center">
+              <input
+                type="search"
+                class="py-1 rounded-md text-lg px-3 form-input"
+                placeholder="Search..."
+                id="search"
+              />
             </div>
-            <div class="filter my-3">
-                <div class="row justify-content-between">
-                   <div class="col-6">
-                    Records per page 
-                    <select class="form-select" id="records_size" style="max-width: 80px;">
-                        <option value="5">5</option>
-                        <option selected value="10">10</option>
-                        <option value="20">20</option>
-                        <option value="50">50</option>
-                    </select>
-                   </div>
-                   <div class="col-6">
-                      Search:
-                      <div class="input-group">
-                         <input type="search" class="form-control" placeholder="Search..." aria-label="Recipient's username" id="search" >
-                      </div>
-                   </div>
-                </div>
-             </div>
-            <div class="display">
-              <table class="table table-striped">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Your Name</th>
-                    <th scope="col">Actions</th>
-                  </tr>
-                </thead>
-                <tbody id="records">
-                  <!-- <tr>
-                    <th scope="row">1</th>
-                    <td>King of Javascript</td>
-                    <td><i class="btn text-white fa fa-edit btn-info mx-2"></i> <i class="btn btn-danger text-white fa fa-trash"></i></td>
-                  </tr> -->
-                </tbody>
-              </table>
-              <div class="row">
-                <div class="col">
-                    <div id="page-details"></div>
-                </div>
-                <div class="col">
-                    <nav class="d-flex justify-content-center">
-                        <ul class="pagination" id="pagination">
-                            <!-- <li class="page-item disabled">
-                                <a class="page-link" href="#">Previous</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">1</a></li>
-                            <li class="page-item active">
-                                <a class="page-link" href="#">2</a>
-                            </li>
-                            <li class="page-item"><a class="page-link" href="#">3</a></li>
-                            <li class="page-item"><a class="page-link" href="#">Next</a>
-                            </li> -->
-                        </ul>
-                    </nav>
-                </div>
-                <a class="" href="./index.html">Log Out</a>
+          </div>
+        </div>
+        <div class="display">
+          <!---------------------------------Task details container ---------------- -->
+          <div
+            class="grid grid-cols-6 text-xl font-bold text-blue-800 bg-white px-6 py-2 rounded-md"
+          >
+            <div class="text-center">#</div>
+
+            <div class="col-span-4 text-center">Task Details</div>
+
+            <div>Actions</div>
+          </div>
+          <div id="recordsDisplay">
+
+
+
+            <div class="collapse bg-base-200 my-1">
+              <input type="checkbox" />
+              <div class="collapse-title text-xl grid grid-cols-6 font-medium">
+                <p class="text-center">1</p>
+                <p class="text-center col-span-4">Go for walk</p>
+                <div class="text-center">❌</div>
               </div>
+              <div class="collapse-content">
+                <p class="text-center">hello</p>
+              </div>
+            </div>
+
+
+
+
+          </div>
+
+
+          <!-- -----------------------Pagination container ------------------------ -->
+          <div class="flex justify-between items-center mt-4">
+            <div>
+              <a
+                class="text-red-500 text-xl font-extrabold hover:text-blue-700 underline block text-center"
+                href="./index.html"
+                >Log Out</a
+              >
+            </div>
+            <div class="flex gap-6">
+              <h1
+                class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
+              >
+                « Previous
+              </h1>
+              <h1
+                class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
+              >
+                Next »
+              </h1>
             </div>
           </div>
         </div>
       </div>
-      
-      <script src="javascript/script.js"></script>
-</body>
+    </div>
+
+    <script src="javascript/script.js"></script>
+  </body>
 </html>

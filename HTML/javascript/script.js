@@ -1,169 +1,114 @@
-const addUserBtn = document.getElementById('addUser');
-const btnText = addUserBtn.innerText;
-const usernameTextField = document.getElementById('username');
-const recordsDisplay = document.getElementById('records');
-const record_size = document.getElementById('records_size');
+const addUserBtn = document.getElementById("addUser");
+const TaskName = document.getElementById("username");
+const TaskDetails = document.getElementById("details");
+const recordsDisplay = document.getElementById("recordsDisplay");
+const record_size = document.getElementById("recordSize");
+const Search = document.getElementById("search");
+let totalRecordsToShow = parseInt(record_size.value);
 let userArray = [];
-let edit_id = null;
+let renderArray = userArray;
 
-let objStr = localStorage.getItem('users');
-
-if (objStr != null) {
-   userArray = JSON.parse(objStr);
+// Function to load data from local storage
+function loadDataFromLocalStorage() {
+  const objStr = localStorage.getItem("users");
+  if (objStr != null) {
+    userArray = JSON.parse(objStr);
+    renderArray = userArray;
+  }
 }
 
-DisplayInfo();
-addUserBtn.onclick = () => {
-   //get user's name from text field
-   const name = usernameTextField.value;
-   if (edit_id != null) {
-      //edit action
-      userArray.splice(edit_id, 1, {
-         'name': name
-      });
-      edit_id = null;
-   } else {
-      //insert action
-      userArray.push({
-         'name': name
-      });
-   }
-console.log(userArray)
-   SaveInfo(userArray);
-   usernameTextField.value = '';
-   addUserBtn.innerText = btnText;
+// Function to save data to local storage and update the display
+function saveAndRender() {
+  SaveInfo(userArray);
+  renderArray = userArray;
+  renderTasks();
 }
 
-// store user's name in local storage
-function SaveInfo(userArray) {
-   let str = JSON.stringify(userArray);
-   localStorage.setItem('users', str);
-   DisplayInfo();
+// Function to save data to local storage
+function SaveInfo(Array) {
+  let str = JSON.stringify(Array);
+  localStorage.setItem("users", str);
 }
 
-// display user's name
-function DisplayInfo() {
-   let statement = '';
-   userArray.forEach((user, i) => {
-      statement += `<tr>
-           <th scope="row">${i+1}</th>
-           <td>${user.name}</td>
-           <td><i class="btn text-white fa fa-edit btn-info mx-2" onclick='EditInfo(${i})'></i> <i class="btn btn-danger text-white fa fa-trash" onclick='DeleteInfo(${i})'></i></td>
-         </tr>`;
-   });
-   recordsDisplay.innerHTML = statement;
+function deleteTask(index) {
+  userArray.splice(index, 1); // Remove the task from the userArray
+  saveAndRender(); // Save changes to local storage and update display
 }
 
-// edit user's name
-function EditInfo(id) {
-   edit_id = id;
-   usernameTextField.value = userArray[id].name;
-   addUserBtn.innerText = 'Save Changes';
-}
-
-//delete user's name
-function DeleteInfo(id) {
-   userArray.splice(id, 1);
-   SaveInfo(userArray);
-
-}
-// next
-//select all tr of table
-const allTr = document.querySelectorAll('#records tr');
-
-//get text as query from search text field
-const searchInputField = document.querySelector('#search');
-searchInputField.addEventListener('input', function (e) {
-   const searchStr = e.target.value.toLowerCase();
-   recordsDisplay.innerHTML = '';
-   allTr.forEach(tr => {
-      const td_in_tr = tr.querySelectorAll('td');
-      if (td_in_tr[0].innerText.toLowerCase().indexOf(searchStr) > -1) {
-         recordsDisplay.appendChild(tr);
-      }
-   });
-
-   if (recordsDisplay.innerHTML == '') {
-      recordsDisplay.innerHTML = ' No Records Found';
-   }
-});
-//last pegination
-
-const total_records_tr = document.querySelectorAll('#records tr');
-let records_per_page = 10;
-let page_number = 1;
-const total_records = total_records_tr.length;
-let total_page = Math.ceil(total_records/records_per_page);
-generatePage();
-DisplayRecords();
-function DisplayRecords(){
-    let start_index = (page_number -1) * records_per_page;
-    let end_index = start_index + (records_per_page-1);
-    if(end_index>=total_records){
-        end_index = total_records-1;
+// Function to render tasks
+function renderTasks() {
+  if (renderArray.length > 0) {
+    let showingHtml = [];
+    for (let index = 0; index < renderArray.length; index++) {
+      const task = renderArray[index];
+      showingHtml.push(`
+            <div class=" items-center grid grid-cols-6">
+                <div class="collapse col-span-5 bg-base-200 my-1">
+                    <input type="checkbox" />
+                    <div class="collapse-title text-xl grid grid-cols-5 font-medium">
+                        <p class="text-center">${index + 1}</p>
+                        <p id="taskNameId" class="text-center col-span-4">${
+                          task.name
+                        }</p>
+                        
+                    </div>
+                    <div class="collapse-content">
+                        <p id="detailscontainer" class="text-center">${
+                          task.detail
+                        }</p>
+                    </div>
+                    
+                </div><div class="text-center bg-white mx-2 py-4 rounded-md  deleteAction cursor-pointer">❌</div></div>
+            `);
     }
-    let statement = '';
-    for(let i = start_index;i<=end_index;i++){
-        statement+=`<tr>${total_records_tr[i].innerHTML}</tr>`;
-    }
-    recordsDisplay.innerHTML = statement;
-    document.querySelectorAll('.dynamic-item').forEach(item=>{
-        item.classList.remove('active');
+    recordsDisplay.innerHTML = showingHtml.join("");
+
+    // Add event listeners to delete action divs
+    const deleteActions = document.querySelectorAll(".deleteAction");
+    deleteActions.forEach((deleteAction, index) => {
+      deleteAction.addEventListener("click", () => {
+        deleteTask(index);
+      });
     });
-    document.getElementById(`page${page_number}`).classList.add('active');
-    if(page_number==1){
-        document.getElementById('prevBtn').parentElement.classList.add('disabled');
-    }else{
-        document.getElementById('prevBtn').parentElement.classList.remove('disabled');
-    }
-    if(page_number==total_page){
-        document.getElementById('nextBtn').parentElement.classList.add('disabled');
-    }else{
-        document.getElementById('nextBtn').parentElement.classList.remove('disabled');
-    }
-    document.getElementById('page-details').innerHTML = `Showing ${start_index+1} to ${end_index+1} of ${total_records}`;
-
-}
-function generatePage(){
-    //disabled
-    let prevBtn = `<li class="page-item ">
-    <a class="page-link" id="prevBtn" onclick = "prevBtn()" href="javascript:void(0)">Previous</a>
-</li>`;
-    let nextBtn = `<li class="page-item" ><a class="page-link" id="nextBtn" onclick = "nextBtn()" href="javascript:void(0)">Next</a>
-    </li>`;
-    let buttons = '';
-    let activeClass = '';
-    for(let i=1;i<=total_page;i++){
-        if(i==1){
-            activeClass='active';
-        }
-        else{
-            activeClass = '';
-        }
-        buttons+=` <li class="page-item dynamic-item ${activeClass}" id="page${i}" ><a class="page-link" onclick="page(${i})" href="javascript:void(0)">${i}</a></li>`;
-    }
-
-    document.getElementById('pagination').innerHTML=`${prevBtn} ${buttons} ${nextBtn}`;
+  } else {
+    recordsDisplay.innerHTML = "";
+  }
 }
 
-function prevBtn(){
-    page_number--;
-    DisplayRecords();
-}
-function nextBtn(){
-    page_number++;
-    DisplayRecords();
-}
-
-function page(index){
-    page_number = parseInt(index);
-    DisplayRecords();
+function searchAndRender(){
+ const filter=   userArray.filter((task)=>task.name.toLowerCase().includes(Search.value))
+ console.log(filter)
+ renderArray=filter
+ renderTasks()
+ console.log(Search.value)
 }
 
-record_size.addEventListener('change',function(e){
-    records_per_page = parseInt(record_size.value);
-    total_page = Math.ceil(total_records/records_per_page)
-    page_number = 1;
-    generatePage();
-    DisplayRecords();
+// Load data from local storage when the page loads
+window.addEventListener("load", () => {
+  loadDataFromLocalStorage();
+  renderTasks();
 });
+
+// Add event listener to the add user button
+addUserBtn.addEventListener("click", () => {
+  const name = TaskName.value;
+  const details = TaskDetails.value;
+  userArray.push({
+    name: name,
+    detail: details,
+  });
+  saveAndRender();
+  TaskDetails.value = "";
+  TaskName.value = "";
+});
+
+// Add event listener to the record size selector
+record_size.addEventListener("change", function () {
+  totalRecordsToShow = parseInt(record_size.value);
+  renderArray=userArray.slice(0,totalRecordsToShow)
+
+  renderTasks()
+  console.log("Selected option value:", totalRecordsToShow);
+});
+
+Search.addEventListener("input", searchAndRender);
