@@ -169,7 +169,7 @@ function renderTasks() {
       const currentIndex = Start + index + 1;
       showingHtml.push(`
             <div class=" items-center grid grid-cols-6">
-                <div class="collapse col-span-5 bg-base-200 my-1">
+                <div class="bg-white collapse col-span-5 bg-base-200 my-1">
                     <input type="checkbox" />
                     <div class="collapse-title text-xl grid grid-cols-5 font-medium">
                         <p class="text-center">${currentIndex}</p>

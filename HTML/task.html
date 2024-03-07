@@ -5,13 +5,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>To-Do list project</title>
     <!-- Tailwind CSS -->
-    
+
     <link
       href="https://cdn.jsdelivr.net/npm/daisyui@4.7.2/dist/full.min.css"
       rel="stylesheet"
       type="text/css"
     />
-   
 
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
@@ -32,13 +31,13 @@
           <div class="flex gap-3">
             <input
               type="text"
-              class="py-1 rounded-md border-2 px-5 border-blue-500 outline-none"
+              class="py-1 bg-white rounded-md border-2 px-5 border-blue-500 outline-none"
               placeholder="Enter Your Name"
               id="username"
             />
             <input
               type="text"
-              class="py-1 rounded-md border-2 px-5 border-blue-500 outline-none"
+              class="py-1 bg-white rounded-md border-2 px-5 border-blue-500 outline-none"
               placeholder="Enter Details"
               id="details"
             />
@@ -51,12 +50,12 @@
             Add Task
           </button>
         </div>
-        <div class="my-3 flex justify-between items-center">
-          <div class="text-xl font-bold">
+        <div class="my-3 flex justify-between items-center text-black">
+          <div class="text-xl font-bold text-black">
             Records per page
-            <select class="form-select" id="recordSize">
+            <select class="form-select bg-white" id="recordSize">
               <option selected value="5">5</option>
-              <option  value="10">10</option>
+              <option value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
             </select>
@@ -66,7 +65,7 @@
             <div class="flex items-center">
               <input
                 type="search"
-                class="py-1 rounded-md text-lg px-3 form-input"
+                class="py-1 bg-white rounded-md text-lg px-3 form-input"
                 placeholder="Search..."
                 id="search"
               />
@@ -84,27 +83,7 @@
 
             <div>Actions</div>
           </div>
-          <div id="recordsDisplay">
-
-
-
-            <div class="collapse bg-base-200 my-1">
-              <input type="checkbox" />
-              <div class="collapse-title text-xl grid grid-cols-6 font-medium">
-                <p class="text-center">1</p>
-                <p class="text-center col-span-4">Go for walk</p>
-                <div class="text-center">❌</div>
-              </div>
-              <div class="collapse-content">
-                <p class="text-center">hello</p>
-              </div>
-            </div>
-
-
-
-
-          </div>
-
+          <div id="recordsDisplay"></div>
 
           <!-- -----------------------Pagination container ------------------------ -->
           <div class="flex justify-between items-center mt-4">
@@ -116,12 +95,14 @@
               >
             </div>
             <div class="flex gap-6">
-              <h1 id="prevbtn"
+              <h1
+                id="prevbtn"
                 class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
               >
                 « Previous
               </h1>
-              <h1 id="nextbtn"
+              <h1
+                id="nextbtn"
                 class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
               >
                 Next »
@@ -134,6 +115,5 @@
 
     <script src="javascript/script.js"></script>
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
-
   </body>
 </html>
