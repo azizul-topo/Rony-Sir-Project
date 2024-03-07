@@ -11,6 +11,8 @@
       rel="stylesheet"
       type="text/css"
     />
+   
+
     <script src="https://cdn.tailwindcss.com"></script>
   </head>
 
@@ -53,8 +55,8 @@
           <div class="text-xl font-bold">
             Records per page
             <select class="form-select" id="recordSize">
-              <option value="5">5</option>
-              <option selected value="10">10</option>
+              <option selected value="5">5</option>
+              <option  value="10">10</option>
               <option value="20">20</option>
               <option value="30">30</option>
             </select>
@@ -114,12 +116,12 @@
               >
             </div>
             <div class="flex gap-6">
-              <h1
+              <h1 id="prevbtn"
                 class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
               >
                 « Previous
               </h1>
-              <h1
+              <h1 id="nextbtn"
                 class="text-blue-700 text-lg hover:text-red-600 underline cursor-pointer font-extrabold"
               >
                 Next »
@@ -131,5 +133,7 @@
     </div>
 
     <script src="javascript/script.js"></script>
+    <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
+
   </body>
 </html>
