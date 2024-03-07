@@ -9,7 +9,7 @@ const PreviousBtn = document.getElementById("prevbtn");
 const NextBtn = document.getElementById("nextbtn");
 let userArray = [];
 let renderArray = userArray;
-
+let Page;
 let Start = 0;
 let end = totalRecordsToShow;
 
@@ -19,6 +19,8 @@ function loadDataFromLocalStorage() {
   if (objStr != null) {
     userArray = JSON.parse(objStr);
     renderArray = userArray;
+    // console.log(userArray.length);
+    // console.log(totalRecordsToShow);
   }
 }
 
@@ -28,8 +30,12 @@ function saveAndRender() {
   renderArray = userArray;
   renderTasks();
 }
+let deadEnd=false
+
 function NextBtnOnclick() {
-  if (Start >= userArray.length || totalRecordsToShow >= userArray.length) {
+  
+  if(Start+totalRecordsToShow>userArray.length){deadEnd=true}
+  if (deadEnd||Start >= userArray.length || totalRecordsToShow >= userArray.length) {
     // If already at the end, show a warning message
     swal({
       title: "Sorry",
@@ -41,14 +47,16 @@ function NextBtnOnclick() {
   }
   Start = end; // Update the start index to the current end index
 
-  end = Math.min(Start + totalRecordsToShow, userArray.length); // Calculate the new end index
-
+  end = Start + totalRecordsToShow
+  console.log(Start,end) // Calculate the new 
+ 
   let slicedArray = userArray.slice(Start, end);
   renderArray = slicedArray;
   renderTasks();
 }
 
 function perviousBtnHandle() {
+  deadEnd=false
   if (Start === 0) {
     console.log(Start);
     swal({
@@ -139,25 +147,21 @@ function editTask(index) {
           newDetail = inputValue;
           console.log("Name: ", newName, "detail : ", newDetail);
           userArray[index].name = newName;
-      userArray[index].detail = newDetail;
+          userArray[index].detail = newDetail;
 
-
-
-      saveAndRender();
-  renderArray = userArray.slice(Start, end); // Update renderArray
-  renderTasks();
-  swal({
-    title: "Congratulation!!",
-    text: "Successfully Edited the task",
-    icon: "success",
-    button: "Ok, thats nice",
-  });
+          saveAndRender();
+          renderArray = userArray.slice(Start, end); // Update renderArray
+          renderTasks();
+          swal({
+            title: "Congratulation!!",
+            text: "Successfully Edited the task",
+            icon: "success",
+            button: "Ok, thats nice",
+          });
         });
       });
     }
   });
-
-  
 }
 
 // Function to render tasks
@@ -219,6 +223,7 @@ window.addEventListener("load", () => {
   loadDataFromLocalStorage();
   totalRecordsToShow = parseInt(record_size.value);
   renderArray = userArray.slice(0, totalRecordsToShow);
+
   renderTasks();
 });
 
